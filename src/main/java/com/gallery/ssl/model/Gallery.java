@@ -1,7 +1,7 @@
 package com.gallery.ssl.model;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Collection;
 
 /**
  * The Entity class for the gallery
@@ -13,28 +13,26 @@ import java.util.List;
 @Entity
 public class Gallery {
 
-    private int id;
-    private User user;
-    private String title;
-    List<Image> images;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int getId() {
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    private String title;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gallery", fetch= FetchType.EAGER)
+    Collection<Image> images;
+
+    public Gallery(){ }
+    public Gallery( String title, Collection<Image> images){
+        this.title = title;
+        this.images = images;
+    }
+
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         id = id;
-    }
-
-    @OneToOne (cascade = CascadeType.ALL,fetch=FetchType.EAGER)
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public String getTitle() {
@@ -45,12 +43,21 @@ public class Gallery {
         this.title = title;
     }
 
-   @OneToMany
-    public List<Image> getImages() {
+
+    public Collection<Image> getImages() {
         return images;
     }
 
-    public void setImages(List<Image> images) {
+    public void setImages(Collection<Image> images) {
         this.images = images;
+    }
+
+    @Override
+    public String toString() {
+        return "Gallery{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", images=" + images +
+                '}';
     }
 }

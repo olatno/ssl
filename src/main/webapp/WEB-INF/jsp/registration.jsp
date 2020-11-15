@@ -14,7 +14,7 @@
 </head>
 <body>
     <h1>Registration page</h1>
-    <form:form name='loginForm' action="/login" method='POST' modelAttribute="user">
+    <form:form name='loginForm' action="/admin" method='POST' modelAttribute="registerRequest">
         <div class="form-group">
             <label for="firstname">First Name</label>
             <form:input type="input" class="form-control" id="firstname" path='firstName' placeholder="First Name"/>
@@ -30,6 +30,10 @@
         <div class="form-group">
             <label for="exampleInputPassword1">Password</label>
             <form:input type="password" class="form-control" id="exampleInputPassword1" path='password' placeholder="Password"/>
+        </div>
+        <div class="form-group">
+            <label for="gallerytitle">User Email</label>
+            <form:input type="text" class="form-control" id="gallerytitle" path='title' placeholder="Gallery title"/>
         </div>
         <button type="submit" name="submit" value="submit">Submit</button>
     </form:form>

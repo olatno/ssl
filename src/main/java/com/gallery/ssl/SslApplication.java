@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
-@EntityScan(basePackages = {"com.gallery.ssl"})
+@EntityScan(basePackages = {"com.gallery.ssl.model"})
 public class SslApplication {
 
     public static void main(String[] args) {

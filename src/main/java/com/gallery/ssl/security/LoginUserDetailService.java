@@ -32,7 +32,7 @@ public class LoginUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = galleryService.getUserLoginByEmail(username);
+        User user = galleryService.findByEmail(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
