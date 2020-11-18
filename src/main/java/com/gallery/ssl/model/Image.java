@@ -20,7 +20,7 @@ public class Image {
     private String description;
     private LocalDate createdDate;
     private Byte[] data;
-    @ManyToOne(cascade = CascadeType.ALL,fetch=FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "gallery_id", referencedColumnName="id")
     private Gallery gallery;
 

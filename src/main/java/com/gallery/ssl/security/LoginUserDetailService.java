@@ -29,6 +29,9 @@ public class LoginUserDetailService implements UserDetailsService {
     @Autowired
     private GalleryService galleryService;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -46,6 +49,11 @@ public class LoginUserDetailService implements UserDetailsService {
         return loginUserDetails;
     }
 
+    /**
+     * The login user security context
+     *
+     * @return Login user details object
+     */
     public LoginUserDetails getLoginUserDetails() {
 
         SecurityContext context = SecurityContextHolder.getContext();

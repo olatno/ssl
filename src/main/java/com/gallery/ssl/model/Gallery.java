@@ -17,7 +17,7 @@ public class Gallery {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String title;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gallery", fetch= FetchType.EAGER)
+    @OneToMany
     Collection<Image> images;
 
     public Gallery(){ }

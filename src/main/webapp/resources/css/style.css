@@ -1,0 +1,15 @@
+ul.top-toolbar{
+    display: inline-flex;
+    margin: 0px;
+    list-style-type: none;
+}
+
+ul.top-toolbar li a{
+    margin: 10px;
+    text-decoration: none;
+
+}
+
+a, a:visited, a:hover, a:active {
+    color: inherit;
+}

@@ -23,7 +23,6 @@ public class GallerySecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @Autowired
     private LoginUserDetailService loginUserDetailService;
 
@@ -37,11 +36,13 @@ public class GallerySecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
+        http.csrf().disable();
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/registration").permitAll()
-                .and().csrf().disable().formLogin()
+                .antMatchers("/galleryLogin").permitAll()
+                .antMatchers("/user").permitAll()
+                .and().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
                 .defaultSuccessUrl("/admin")
                 .usernameParameter("username")
