@@ -5,7 +5,6 @@ import com.gallery.ssl.model.Image;
 import com.gallery.ssl.model.User;
 import com.gallery.ssl.util.RegisterRequest;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface GalleryService {
@@ -34,7 +33,13 @@ public interface GalleryService {
      */
     Gallery saveGallery(RegisterRequest registerRequest);
 
-    String viewGallery();// first view with all gallery images plus menu to login or create user
+    /**
+     * The List of  gallery
+     *
+     * @return List of uploaded images by all users
+     */
+    List<Image> viewGallery();
+
     String deleteImage();
 
     /**
@@ -44,7 +49,7 @@ public interface GalleryService {
      * @param name the image name
      * @param description the image description
      * @param user the login user
-     * @throws IOException
+     *
      * @return uploaded image
      */
     Image uploadImage(byte[] data, String name, String description, User user);
@@ -53,7 +58,7 @@ public interface GalleryService {
     /**
      * The List of user's gallery
      *
-     * @return List of uploaded images bu user
+     * @return List of uploaded images by a user
      */
     List<Object[]> userGallery(User user);
 }

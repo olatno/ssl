@@ -1,5 +1,6 @@
 package com.gallery.ssl.controller;
 
+import com.gallery.ssl.model.Image;
 import com.gallery.ssl.model.User;
 import com.gallery.ssl.security.LoginUserDetailService;
 import com.gallery.ssl.security.LoginUserDetails;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * The controller class for the mvc
@@ -32,6 +34,14 @@ public class GalleryController {
     @Autowired
     LoginUserDetailService loginUserDetailService;
 
+    /**
+     * Login request url
+     *
+     * @param model the model use to pass info to front end
+     * @param request the HttpServletRequest object
+     *
+     * @return String login
+     */
     @RequestMapping(value = "/login")
     public String login(Model model, HttpServletRequest request) {
         User userObj = (User)request.getSession().getAttribute("userObj");
@@ -46,11 +56,14 @@ public class GalleryController {
        return "login" ;
     }
 
+    /**
+     * Admin request url
+     * @param model the model use to pass info to front end
+     *
+     * @return String admin
+     */
     @RequestMapping(value = "/admin")
     public String admin(Model model) {
-        //get individual gallery here and put them into model
-        //use model to populate individual gallery
-        //allow individual image to be modify using angular anonymousUser
         String admin = StringUtils.EMPTY;
         LoginUserDetails loginUserDetails = loginUserDetailService.getLoginUserDetails();
         User user = null;
@@ -65,6 +78,14 @@ public class GalleryController {
         return admin;
     }
 
+    /**
+     * Registration request url
+     *
+     * @param model the model use to pass info to front end
+     * @param request the HttpServletRequest object
+     *
+     * @return String registration
+     */
     @RequestMapping(value = "/", method = {RequestMethod.POST, RequestMethod.GET})
     public String registration(Model model, HttpServletRequest request, @ModelAttribute("registerRequest") RegisterRequest registerRequest) {
         User userObj = null;
@@ -77,5 +98,12 @@ public class GalleryController {
             return "redirect:/login";
         }
         return "registration";
+    }
+
+    @RequestMapping(value = "/gallery")
+    public String gallery(Model model) {
+        List<Image> imageList = galleryService.viewGallery();
+        model.addAttribute("images", imageList);
+        return "gallery";
     }
 }

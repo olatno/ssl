@@ -1,21 +1,29 @@
 /**
  * Created by olatu on 16/11/2020.
  */
-//(function() {
 
-    var app  = angular.module('galleryApp',[]);
+var app  = angular.module('galleryApp',[]);
 
 
     app.controller('galleryCtrl', ['$scope','$http',  function ($scope,  $http) {
 
         $scope.data = {};
         $scope.message = '';
-        $scope.image = {};
+        $scope.imageData = [];
+
+        $http({
+            method: 'GET',
+            url: '/getUserImages ',
+        }).then(function (response){
+            $scope.imageData.push(response.data);
+        },function (error){
+            $scope.message =  ' Gallery is empty';
+        });
 
         $scope.uploadImage = function () {
 
-                var formData = new FormData();
-                var file = document.getElementById('imageFile').files[0];
+                let formData = new FormData();
+                let file = document.getElementById('imageFile').files[0];
 
                  formData.append('file', file);
 
@@ -28,11 +36,15 @@
                     processData: false,
                     contentType: false
                 }).then(function (response){
-                    $scope.message = response.data +' image has been saved successfully';
+                    $scope.imageData = [];
+                    $scope.imageData.push(response.data);
+                    $scope.message =  'image has been saved successfully';
                 },function (error){
                     $scope.message =  ' Image was not successful uploaded';
                 });
+            $scope.data = {};
+            document.getElementById('imageFile').value = '';
         }
+
     }]);
 
-//}());

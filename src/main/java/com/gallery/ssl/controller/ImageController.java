@@ -1,6 +1,5 @@
 package com.gallery.ssl.controller;
 
-
 import com.gallery.ssl.model.Image;
 import com.gallery.ssl.model.User;
 import com.gallery.ssl.security.LoginUserDetailService;
@@ -39,6 +38,14 @@ public class ImageController {
     LoginUserDetailService loginUserDetailService;
 
 
+    /**
+     * Save image to db
+     *
+     * @param request the HttpServletRequest object
+     * @param file the image file
+     *
+     * @return List of array object
+     */
     @RequestMapping(value = "/saveImage" , method = RequestMethod.POST, consumes = { "multipart/form-data" })
     public ResponseEntity<List<Object[]>> saveUploadedImage(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException {
         User user = loginUserDetailService.getLoginUserDetails().getUser();
@@ -48,6 +55,20 @@ public class ImageController {
 
         List<Object[]> imageList = galleryService.userGallery(user);
 
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.ALL_VALUE)
+                .body(imageList);
+    }
+
+    /**
+     * Get login user image gallery
+     *
+     * @return List of array object
+     */
+    @RequestMapping(value = "/getUserImages" , method = RequestMethod.GET)
+    public ResponseEntity<List<Object[]>> getImages(){
+        User user = loginUserDetailService.getLoginUserDetails().getUser();
+        List<Object[]> imageList = galleryService.userGallery(user);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.ALL_VALUE)
                 .body(imageList);

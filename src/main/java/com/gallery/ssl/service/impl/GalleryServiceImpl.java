@@ -64,8 +64,11 @@ public class GalleryServiceImpl implements GalleryService {
         return userRepository.findByEmail(email);
     }
 
-    public String viewGallery(){
-        return null;
+    /**
+     * {@inheritDoc}
+     */
+    public List<Image> viewGallery(){
+        return imageRepository.findAll();
     }
 
     public String deleteImage(){

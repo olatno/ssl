@@ -64,7 +64,7 @@ public class GalleryControllerTest {
     @Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
     public void testRegistrationPost(){
         when(request.getMethod()).thenReturn("POST");
-        User user = new User();
+        User user = mock(User.class);
         RegisterRequest registerRequest = this.getRegisterRequest();
         when(galleryService.user(registerRequest)).thenReturn(user);
         galleryController.registration(model, request, this.getRegisterRequest());
