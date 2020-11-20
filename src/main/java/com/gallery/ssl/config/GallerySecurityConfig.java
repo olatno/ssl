@@ -39,8 +39,6 @@ public class GallerySecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/registration").permitAll()
-                .antMatchers("/galleryLogin").permitAll()
-                .antMatchers("/user").permitAll()
                 .and().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
                 .defaultSuccessUrl("/admin")

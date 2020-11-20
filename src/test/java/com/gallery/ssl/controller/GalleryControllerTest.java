@@ -65,7 +65,7 @@ public class GalleryControllerTest {
     public void testRegistrationPost(){
         when(request.getMethod()).thenReturn("POST");
         User user = mock(User.class);
-        RegisterRequest registerRequest = this.getRegisterRequest();
+        RegisterRequest registerRequest = mock(RegisterRequest.class);
         when(galleryService.user(registerRequest)).thenReturn(user);
         galleryController.registration(model, request, this.getRegisterRequest());
     }

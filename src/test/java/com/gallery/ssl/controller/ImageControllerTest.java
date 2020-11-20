@@ -5,6 +5,7 @@ import com.gallery.ssl.model.User;
 import com.gallery.ssl.security.LoginUserDetailService;
 import com.gallery.ssl.security.LoginUserDetails;
 import com.gallery.ssl.service.GalleryService;
+import com.gallery.ssl.util.BytesProcess;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
@@ -70,5 +74,48 @@ public class ImageControllerTest {
        ResponseEntity<List<Object[]>> responseEntity = imageController.getImages();
        Assert.assertEquals(responseEntity.getStatusCode().getReasonPhrase(), "OK");
        Assert.assertEquals(responseEntity.getStatusCode().value() , 200);
+   }
+
+   @Test
+   public void testDeleteImage(){
+       User user = mock(User.class);
+       LoginUserDetails loginUserDetails = mock(LoginUserDetails.class);
+       when(loginUserDetailService.getLoginUserDetails()).thenReturn(loginUserDetails);
+       when(loginUserDetails.getUser()).thenReturn(user);
+       when( galleryService.userGallery(user)).thenReturn(getObjectList());
+       ResponseEntity<List<Object[]>> responseEntity = imageController.deleteImage(user.getId());
+       Assert.assertEquals(responseEntity.getStatusCode().getReasonPhrase(), "OK");
+       Assert.assertEquals(responseEntity.getStatusCode().value() , 200);
+   }
+
+   @Test
+   public void testDeleteGallery(){
+       User user = mock(User.class);
+       LoginUserDetails loginUserDetails = mock(LoginUserDetails.class);
+       when(loginUserDetailService.getLoginUserDetails()).thenReturn(loginUserDetails);
+       when(loginUserDetails.getUser()).thenReturn(user);
+       when( galleryService.userGallery(user)).thenReturn(getObjectList());
+       ResponseEntity<List<Object[]>> responseEntity = imageController.deleteGallery();
+       Assert.assertEquals(responseEntity.getStatusCode().getReasonPhrase(), "OK");
+       Assert.assertEquals(responseEntity.getStatusCode().value() , 200);
+   }
+
+   private List<Object[]> getObjectList(){
+       List<Object[]> listObjects = new ArrayList<>();
+       Object[] objects = new Object[5];
+       byte[] bytes  = new byte[4];
+       bytes[0] = 10;
+       bytes[0] = 20;
+       bytes[0] = 20;
+       bytes[0] = 10;
+       objects[0] = BytesProcess.decompressBytes(bytes);
+       objects[1] = "image name";
+       objects[2] =  "image description";
+       LocalDate localDate = LocalDate.now();
+       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+       objects[3] = localDate.format(formatter);
+       objects[4] = 1;
+       listObjects.add(objects);
+       return listObjects;
    }
 }
