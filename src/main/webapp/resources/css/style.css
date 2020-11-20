@@ -13,3 +13,13 @@ ul.top-toolbar li a{
 a, a:visited, a:hover, a:active {
     color: inherit;
 }
+.col-sm-4 {
+    width: auto !important;
+}
+
+.panel-footer{
+    /*width: 143px;*/
+    /*white-space: nowrap;*/
+    /*overflow: hidden;*/
+    /*text-overflow: ellipsis;*/
+}

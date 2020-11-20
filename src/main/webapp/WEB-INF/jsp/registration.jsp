@@ -1,5 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: olatno
@@ -7,12 +6,12 @@
   Time: 11:00
   To change this template use File | Settings | File Templates.
 --%>
-<%--<%@ page contentType="text/html;charset=UTF-8" language="java" %>--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="taglibs.jsp" %>
 <html>
-<head>
-    <title>Registration</title>
-    <%@include file="header.jsp" %>
-</head>
+
+<%@include file="header.jsp" %>
+
 <body>
 <%@include file="nav.jsp" %>
 <div class="container" >

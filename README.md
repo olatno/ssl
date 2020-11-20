@@ -11,7 +11,7 @@ Build spec.
 How to deploy and run the application.
 
     Configure mysql database
-        1. The galley.sql contains the necessary script to ceate database and its tables
+        1. The galley.sql at the root of the project contains the necessary script to ceate database and its tables
         2. Create databsse user for 'galleryUser' with password 'gallery@11'
         3. Run CREATE DATABASE IF NOT EXISTS `db_gallery`;
         4. Run GRANT ALL PRIVILEGES ON db_gallery.* TO 'galleryUser' WITH GRANT OPTION;

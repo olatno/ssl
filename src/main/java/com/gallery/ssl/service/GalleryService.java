@@ -40,7 +40,20 @@ public interface GalleryService {
      */
     List<Image> viewGallery();
 
-    String deleteImage();
+    /**
+     * The delete specific image
+     * @param id the image id
+     *
+     * @return void
+     */
+    void deleteImage(Integer id);
+
+    /**
+     * The delete all images
+     *
+     * @return void
+     */
+    void deleteGallery();
 
     /**
      * Upload image method for users
@@ -53,6 +66,7 @@ public interface GalleryService {
      * @return uploaded image
      */
     Image uploadImage(byte[] data, String name, String description, User user);
+
     String editImage();
 
     /**

@@ -6,15 +6,25 @@ var app  = angular.module('galleryApp',[]);
 
 
     app.controller('galleryCtrl', ['$scope','$http',  function ($scope,  $http) {
-
+        let vm = this;
         $scope.data = {};
         $scope.message = '';
         $scope.imageData = [];
+        $scope.buttonAdminAction = false;
+        $scope.selected = {};
+        $scope.imageSelected = {};
+        vm.checkedImage = '';
+
+        vm.csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+        vm.csrfToken = document.querySelector('meta[name="_csrf"]').content;
 
         $http({
             method: 'GET',
             url: '/getUserImages ',
         }).then(function (response){
+            if(response.data.length !== 0){
+                $scope.buttonAdminAction = true;
+            }
             $scope.imageData.push(response.data);
         },function (error){
             $scope.message =  ' Gallery is empty';
@@ -32,7 +42,10 @@ var app  = angular.module('galleryApp',[]);
                     url: '/saveImage?name='+$scope.data.name+'&description='+$scope.data.description,
                     data:formData,
                     enctype: 'multipart/form-data',
-                    headers: { 'Content-Type': undefined },
+                    multipart: true,
+                    headers: { 'Content-Type': undefined,
+                               'X-CSRF-TOKEN' : vm.csrfToken
+                            },
                     processData: false,
                     contentType: false
                 }).then(function (response){
@@ -44,7 +57,48 @@ var app  = angular.module('galleryApp',[]);
                 });
             $scope.data = {};
             document.getElementById('imageFile').value = '';
+            if($scope.data.length !== 0){
+                $scope.buttonAdminAction = true;
+            }
+        }
+        $scope.checkedCheckboxValue = function (){
+            vm.checkedImage = $scope.imageSelected.data;
         }
 
-    }]);
+        $scope.deleteImage = function (){
+            let imageId = vm.checkedImage;
+            if(imageId !== ''){
+                $http({
+                    method: 'POST',
+                    url: '/deleteImage ',
+                    headers: {
+                        'X-CSRF-TOKEN': vm.csrfToken,
+                        'Content-Type':'application/x-www-form-urlencoded'
+                    },
+                    data: "imageId="+imageId,
+                }).then(function (response){
+                    $scope.imageData = [];
+                    $scope.imageData.push(response.data);
+                    if(response.data.length === 0){
+                        $scope.buttonAdminAction = false;
+                    }
+                },function (error){
+                    $scope.deleteMessage =  ' Image is not deleted';
+                });
+            }
+        }
+
+        $scope.deleteGallery = function (){
+            $http({
+                method: 'GET',
+                url: '/deleteGallery ',
+                }).then(function (response){
+                    $scope.imageData = [];
+                    $scope.imageData.push(response.data);
+                    $scope.buttonAdminAction = false;
+                },function (error){
+                    $scope.deleteMessage =  ' Image is not deleted';
+            });
+        }
+}]);
 

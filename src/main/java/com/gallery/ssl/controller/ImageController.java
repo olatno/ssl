@@ -73,4 +73,34 @@ public class ImageController {
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.ALL_VALUE)
                 .body(imageList);
     }
+
+    /**
+     * Get login user image gallery
+     *
+     * @return List of array object deleteGallery
+     */
+    @RequestMapping(value = "/deleteImage" , method = RequestMethod.POST)
+    public ResponseEntity<List<Object[]>> deleteImage(@RequestParam(value ="imageId") Integer imageId){
+        galleryService.deleteImage(imageId);
+        User user = loginUserDetailService.getLoginUserDetails().getUser();
+        List<Object[]> imageList = galleryService.userGallery(user);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.ALL_VALUE)
+                .body(imageList);
+    }
+
+    /**
+     * Get login user image gallery
+     *
+     * @return List of array object
+     */
+    @RequestMapping(value = "/deleteGallery" , method = RequestMethod.GET)
+    public ResponseEntity<List<Object[]>> deleteGallery(){
+        galleryService.deleteGallery();
+        User user = loginUserDetailService.getLoginUserDetails().getUser();
+        List<Object[]> imageList = galleryService.userGallery(user);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.ALL_VALUE)
+                .body(imageList);
+    }
 }

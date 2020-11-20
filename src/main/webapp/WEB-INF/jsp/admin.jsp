@@ -6,11 +6,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="taglibs.jsp" %>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <%@include file="header.jsp" %>
-</head>
+
+<%@include file="header.jsp" %>
+
 <body ng-app="galleryApp">
 <%@include file="nav.jsp" %>
 <h1>Admin page for <span>${user.firstName}</span></h1>
@@ -21,10 +22,15 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">{{data[1]}}</div>
                 <div class="panel-body"><img ng-src="data:image/png;base64,{{data[0]}}" class="img-responsive" style="width:100px; height:40px" alt="{{data[1]}}"></div>
-                <div class="panel-footer">{{data[2]}}</div>
+                <div class="panel-footer" image-identity="{{data[4]}}">{{data[2]}} <input name="image" type="checkbox" ng-model="imageSelected.data" ng-true-value="{{data[4]}}" ng-false-value="" value="{{data[4]}}" ng-change="checkedCheckboxValue()" > </div>
             </div>
         </div>
     </div>
+    <div class="ng-hide" ng-show="buttonAdminAction">
+        <input type="submit" value="Delete image" name="deleteImage" ng-click="deleteImage()">
+        <input type="submit" value="Delete gallery" name="deleteGallery" ng-click="deleteGallery()">
+    </div>
+    <hr>
 <br><br>
 
     <div class="upload">

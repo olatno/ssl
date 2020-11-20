@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The gallery service use by the controller
@@ -71,8 +72,19 @@ public class GalleryServiceImpl implements GalleryService {
         return imageRepository.findAll();
     }
 
-    public String deleteImage(){
-        return null;
+    /**
+     * {@inheritDoc}
+     */
+    public void deleteImage(Integer id){
+        Optional<Image> image = imageRepository.findById(id);
+        imageRepository.delete(image.get());
+    }
+
+    /**
+     * {@inheritDoc} deleteGallery
+     */
+    public void deleteGallery(){
+       imageRepository.deleteAll();
     }
 
     /**
@@ -112,7 +124,7 @@ public class GalleryServiceImpl implements GalleryService {
         List<Image> images = imageRepository.findUserGallery(user.getGallery());
         List<Object[]> listObjects = new ArrayList<>();
         for(Image image : images){
-            Object[] objects = new Object[4];
+            Object[] objects = new Object[5];
             byte[] bytes = ArrayUtils.toPrimitive(image.getData());
             objects[0] = BytesProcess.decompressBytes(bytes);
             objects[1] = image.getName();
@@ -120,6 +132,7 @@ public class GalleryServiceImpl implements GalleryService {
             LocalDate localDate = image.getCreatedDate();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             objects[3] = localDate.format(formatter);
+            objects[4] = image.getId();
             listObjects.add(objects);
         }
         return listObjects;
