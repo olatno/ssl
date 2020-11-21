@@ -21,10 +21,6 @@
                 <li><a href="/gallery">Gallery</a></li>
                 <li><a href="/login">Login</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
-            </ul>
         </div>
     </div>
 </nav>

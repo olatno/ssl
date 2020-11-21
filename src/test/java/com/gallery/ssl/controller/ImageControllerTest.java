@@ -6,6 +6,7 @@ import com.gallery.ssl.security.LoginUserDetailService;
 import com.gallery.ssl.security.LoginUserDetails;
 import com.gallery.ssl.service.GalleryService;
 import com.gallery.ssl.util.BytesProcess;
+import com.gallery.ssl.util.EditImageRequest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -100,6 +101,18 @@ public class ImageControllerTest {
        Assert.assertEquals(responseEntity.getStatusCode().value() , 200);
    }
 
+    @Test
+    public void testEditImage(){
+        User user = mock(User.class);
+        LoginUserDetails loginUserDetails = mock(LoginUserDetails.class);
+        when(loginUserDetailService.getLoginUserDetails()).thenReturn(loginUserDetails);
+        when(loginUserDetails.getUser()).thenReturn(user);
+        when( galleryService.userGallery(user)).thenReturn(getObjectList());
+        ResponseEntity<List<Object[]>> responseEntity = imageController.editImage(this.getEditImageRequest());
+        Assert.assertEquals(responseEntity.getStatusCode().getReasonPhrase(), "OK");
+        Assert.assertEquals(responseEntity.getStatusCode().value() , 200);
+    }
+
    private List<Object[]> getObjectList(){
        List<Object[]> listObjects = new ArrayList<>();
        Object[] objects = new Object[5];
@@ -117,5 +130,13 @@ public class ImageControllerTest {
        objects[4] = 1;
        listObjects.add(objects);
        return listObjects;
+   }
+
+   private EditImageRequest getEditImageRequest(){
+       EditImageRequest editImageRequest = new EditImageRequest();
+       editImageRequest.setId(1);
+       editImageRequest.setName("Image name");
+       editImageRequest.setDescription("Image description");
+       return editImageRequest;
    }
 }

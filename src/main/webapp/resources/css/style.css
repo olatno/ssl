@@ -16,10 +16,10 @@ a, a:visited, a:hover, a:active {
 .col-sm-4 {
     width: auto !important;
 }
+.panel .panel-body{
+    cursor: pointer;
+}
 
-.panel-footer{
-    /*width: 143px;*/
-    /*white-space: nowrap;*/
-    /*overflow: hidden;*/
-    /*text-overflow: ellipsis;*/
+.description{
+    margin-top: 40px;
 }

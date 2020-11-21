@@ -14,7 +14,6 @@ import com.gallery.ssl.util.RegisterRequest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,11 +41,11 @@ public class GalleryControllerTest {
     private HttpServletRequest request;
     @Mock
     private SecurityContext context;
-    @Mock
+    @Autowired
     private LoginUserDetailService loginUserDetailService;
     @Autowired
     private GalleryService galleryService;
-    @InjectMocks
+    @Autowired
     GalleryController galleryController;
 
     @Test
@@ -61,13 +60,13 @@ public class GalleryControllerTest {
         Assert.assertEquals(user.getGallery().getTitle(), "First gallery");
     }
 
-    @Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
+    @Test
     public void testRegistrationPost(){
         when(request.getMethod()).thenReturn("POST");
-        User user = mock(User.class);
-        RegisterRequest registerRequest = mock(RegisterRequest.class);
-        when(galleryService.user(registerRequest)).thenReturn(user);
+        HttpSession httpSession = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(httpSession);
         galleryController.registration(model, request, this.getRegisterRequest());
+        verify(request, times(1)).getMethod();
     }
 
     @Test
@@ -108,6 +107,12 @@ public class GalleryControllerTest {
         galleryController.admin(model);
         Assert.assertEquals(user.getFirstName(), null);
         Assert.assertEquals(user.getLastName(), null);
+    }
+
+    @Test
+    public void testGallery(){
+        galleryController.gallery(model);
+        Assert.assertEquals(galleryService.viewGallery().size(), 0);
     }
 
     private User getUser(){

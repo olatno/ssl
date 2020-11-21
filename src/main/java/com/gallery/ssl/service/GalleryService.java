@@ -1,8 +1,10 @@
 package com.gallery.ssl.service;
 
+import com.gallery.ssl.exception.GalleryServiceException;
 import com.gallery.ssl.model.Gallery;
 import com.gallery.ssl.model.Image;
 import com.gallery.ssl.model.User;
+import com.gallery.ssl.util.EditImageRequest;
 import com.gallery.ssl.util.RegisterRequest;
 
 import java.util.List;
@@ -21,9 +23,10 @@ public interface GalleryService {
      * Find user by email
      *
      * @param email the user email address
+     * @throws GalleryServiceException
      * @return the register user
      */
-    User findByEmail(String email);
+    User findByEmail(String email) throws GalleryServiceException;
 
     /**
      * Save register user gallery to db
@@ -42,11 +45,12 @@ public interface GalleryService {
 
     /**
      * The delete specific image
-     * @param id the image id
      *
+     * @param id the image id
+     *@throws GalleryServiceException
      * @return void
      */
-    void deleteImage(Integer id);
+    void deleteImage(Integer id) throws GalleryServiceException;
 
     /**
      * The delete all images
@@ -67,11 +71,19 @@ public interface GalleryService {
      */
     Image uploadImage(byte[] data, String name, String description, User user);
 
-    String editImage();
+    /**
+     * Edit image name or description
+     *
+     * @param editImageRequest
+     * @throws GalleryServiceException
+     * @return void
+     */
+    void editImage(EditImageRequest editImageRequest) throws GalleryServiceException;
 
     /**
      * The List of user's gallery
      *
+     * @param user
      * @return List of uploaded images by a user
      */
     List<Object[]> userGallery(User user);

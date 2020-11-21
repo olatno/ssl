@@ -19,10 +19,12 @@
 <div class="container" ng-controller="galleryCtrl">
     <div class="row"  ng-repeat="image in imageData" >
         <div class="col-sm-4" ng-repeat="data in image">
-            <div class="panel panel-primary">
-                <div class="panel-heading">{{data[1]}}</div>
-                <div class="panel-body"><img ng-src="data:image/png;base64,{{data[0]}}" class="img-responsive" style="width:100px; height:40px" alt="{{data[1]}}"></div>
-                <div class="panel-footer" image-identity="{{data[4]}}">{{data[2]}} <input name="image" type="checkbox" ng-model="imageSelected.data" ng-true-value="{{data[4]}}" ng-false-value="" value="{{data[4]}}" ng-change="checkedCheckboxValue()" > </div>
+            <div class="panel panel-primary" >
+                <div class="panel-heading" ng-model="imageSelected.title" >{{data[1]}}</div>
+                <div class="panel-body" ng-model="imageSelected.image" ng-click="openImage(data[0], data[1], data[2], data[4])">
+                    <img ng-src="data:image/png;base64,{{data[0]}}" class="img-responsive" style="width:100px; height:40px" alt="{{data[1]}}"></div>
+                <div class="panel-footer" image-identity="{{data[2]}}" ng-model="imageSelected.description">{{data[2]}}
+                    <input name="image" type="checkbox" ng-model="imageSelected.data" ng-true-value="{{data[4]}}" ng-false-value="" value="{{data[4]}}" ng-change="checkedCheckboxValue()" > </div>
             </div>
         </div>
     </div>
@@ -51,11 +53,31 @@
                 <input type="submit">
             </div>
             <p ng-show="{{message !== undefined}}">{{message}}</p>
-
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         </form>
     </div>
-</footer>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <input type="text" class="modal-title" ng-model="openImageData.name" value="{{openImageData.name}}" placeholder="Change image title"/>
+                </div>
+                <div class="modal-body">
+                    <img ng-src="data:image/png;base64,{{openImageData.image}}" style="width: 400px; height: 400px">
+                    <input type="text" class="description" ng-model="openImageData.description" value="{{openImageData.description}}" placeholder="Change image description" />
+                    <input type="hidden" ng-model="openImageData.data"  value="{{openImageData.data}}"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="saveChanges()">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
 </body>
 </html>

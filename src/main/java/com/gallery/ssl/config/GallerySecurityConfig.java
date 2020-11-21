@@ -26,7 +26,6 @@ public class GallerySecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private LoginUserDetailService loginUserDetailService;
 
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth

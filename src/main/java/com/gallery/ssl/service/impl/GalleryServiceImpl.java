@@ -1,17 +1,17 @@
 package com.gallery.ssl.service.impl;
 
+import com.gallery.ssl.exception.GalleryServiceException;
 import com.gallery.ssl.model.Gallery;
 import com.gallery.ssl.model.Image;
 import com.gallery.ssl.model.User;
-import com.gallery.ssl.repository.GalleryRepository;
 import com.gallery.ssl.repository.ImageRepository;
 import com.gallery.ssl.repository.UserRepository;
 import com.gallery.ssl.service.GalleryService;
 import com.gallery.ssl.util.BytesProcess;
+import com.gallery.ssl.util.EditImageRequest;
 import com.gallery.ssl.util.RegisterRequest;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,10 +32,6 @@ import java.util.Optional;
 @Service
 public class GalleryServiceImpl implements GalleryService {
 
-    private static final Logger logger = LogManager.getLogger(GalleryServiceImpl.class);
-
-    @Autowired
-    private GalleryRepository galleryRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -61,8 +57,10 @@ public class GalleryServiceImpl implements GalleryService {
      * {@inheritDoc}
      */
     @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User findByEmail(String email) throws GalleryServiceException{
+        if(StringUtils.isEmpty(email)){
+            throw new GalleryServiceException("Email should not be empty");
+        }else {return userRepository.findByEmail(email);}
     }
 
     /**
@@ -75,9 +73,13 @@ public class GalleryServiceImpl implements GalleryService {
     /**
      * {@inheritDoc}
      */
-    public void deleteImage(Integer id){
-        Optional<Image> image = imageRepository.findById(id);
-        imageRepository.delete(image.get());
+    public void deleteImage(Integer id) throws GalleryServiceException{
+        if(id == null || id == 0){
+            throw new GalleryServiceException("Image id must not be null or 0");
+        }else {
+            Optional<Image> image = imageRepository.findById(id);
+            imageRepository.delete(image.get());
+        }
     }
 
     /**
@@ -91,7 +93,7 @@ public class GalleryServiceImpl implements GalleryService {
      * {@inheritDoc}
      */
     @Override
-    public Image uploadImage(byte[] data, String name, String description, User user) {
+    public Image uploadImage(byte[] data, String name, String description, User user)  {
         Image image = new Image();
         image.setName(name);
         image.setDescription(description);
@@ -102,8 +104,18 @@ public class GalleryServiceImpl implements GalleryService {
         return imageRepository.save(image);
     }
 
-    public String editImage(){
-        return null;
+    /**
+     * {@inheritDoc}
+     */
+    public void editImage(EditImageRequest editImageRequest) throws GalleryServiceException{
+        if(StringUtils.isEmpty(editImageRequest.getDescription()) || StringUtils.isEmpty(editImageRequest.getName())){
+            throw new GalleryServiceException("Image name or Image description should not be emptied");
+        }else{
+            Optional<Image> image = imageRepository.findById(editImageRequest.getId());
+            image.get().setName(editImageRequest.getName());
+            image.get().setDescription(editImageRequest.getDescription());
+            imageRepository.save(image.get());
+        }
     }
 
     /**

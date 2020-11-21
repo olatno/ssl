@@ -13,6 +13,7 @@ var app  = angular.module('galleryApp',[]);
         $scope.buttonAdminAction = false;
         $scope.selected = {};
         $scope.imageSelected = {};
+        $scope.openImageData = {};
         vm.checkedImage = '';
 
         vm.csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
@@ -97,8 +98,40 @@ var app  = angular.module('galleryApp',[]);
                     $scope.imageData.push(response.data);
                     $scope.buttonAdminAction = false;
                 },function (error){
-                    $scope.deleteMessage =  ' Image is not deleted';
+                    $scope.deleteMessage =  ' Gallery is not deleted';
             });
+        }
+
+        $scope.openImage = function (image, name, description, id ){
+            $scope.openImageData.image = image;
+            $scope.openImageData.name = name;
+            $scope.openImageData.description = description;
+            $scope.openImageData.id = id;
+            $('#myModal').modal('show');
+        }
+        $scope.saveChanges = function (){
+            if($scope.openImageData.name !== '' || $scope.openImageData.description !== ''){
+                $scope.imageSelected['id'] = $scope.openImageData.id;
+                $scope.imageSelected['name'] = $scope.openImageData.name;
+                $scope.imageSelected['description'] = $scope.openImageData.description;
+                $http({
+                    method: 'POST',
+                    url: '/editImage ',
+                    headers: {
+                        'X-CSRF-TOKEN': vm.csrfToken,
+                        'Content-Type':'application/json'
+                    },
+                    data: JSON.stringify($scope.imageSelected),
+                }).then(function (response){
+                    $scope.imageData = [];
+                    $scope.imageData.push(response.data);
+                    if(response.data.length === 0){
+                        $scope.buttonAdminAction = false;
+                    }
+                },function (error){
+                    $scope.deleteMessage =  ' Image is not edited';
+                });
+            }
         }
 }]);
 
