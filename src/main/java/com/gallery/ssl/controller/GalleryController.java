@@ -8,6 +8,7 @@ import com.gallery.ssl.util.RegisterRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -90,10 +91,14 @@ public class GalleryController {
     public String registration(Model model, HttpServletRequest request, @ModelAttribute("registerRequest") RegisterRequest registerRequest) {
         User userObj = null;
         if(StringUtils.equals(request.getMethod(), RequestMethod.POST.name())) {
-            userObj = galleryService.user(registerRequest);
+            try {
+                userObj = galleryService.user(registerRequest);
+            }catch (DataIntegrityViolationException d){
+                request.getSession().setAttribute("message", "Email address already registered, please use different email to register");
+                return "redirect:/errors";
+            }
         }
         if(userObj != null && StringUtils.isNoneEmpty(userObj.getEmail())) {
-            model.addAttribute("userObj", userObj);
             request.getSession().setAttribute("userObj", userObj );
             return "redirect:/login";
         }
@@ -112,5 +117,19 @@ public class GalleryController {
         List<Map<String , Object>> imageMapList = galleryService.getGallery();
         model.addAttribute("imageGallery", imageMapList);
         return "gallery";
+    }
+
+    /**
+     * The error page view
+     *
+     * @param model the model use to pass info to front end
+     * @param  request the httpservletrequest object
+     * @return String errors page
+     */
+    @RequestMapping(value = "/errors")
+    public String error(Model model, HttpServletRequest request) {
+        String redirectMessage = (String)request.getSession().getAttribute("message");
+        model.addAttribute("errormessage", redirectMessage);
+        return "errors";
     }
 }

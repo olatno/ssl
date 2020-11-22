@@ -82,6 +82,10 @@ public class GalleryServiceImpl implements GalleryService {
         return galleryRepository.findAll();
     }
 
+    /**
+     * {@inheritDoc}
+     * @return
+     */
     @Override
     public List<Map<String , Object>> getGallery(){
         List<Gallery> galleries = galleryRepository.findAll();
@@ -100,6 +104,7 @@ public class GalleryServiceImpl implements GalleryService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void deleteImage(Integer id) throws GalleryServiceException{
         if(id == null || id == 0){
             throw new GalleryServiceException("Image id must not be null or 0");
@@ -112,6 +117,7 @@ public class GalleryServiceImpl implements GalleryService {
     /**
      * {@inheritDoc} deleteGallery
      */
+    @Override
     public void deleteGallery(){
        imageRepository.deleteAll();
     }
@@ -134,6 +140,7 @@ public class GalleryServiceImpl implements GalleryService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void editImage(EditImageRequest editImageRequest) throws GalleryServiceException{
         if(StringUtils.isEmpty(editImageRequest.getDescription()) || StringUtils.isEmpty(editImageRequest.getName())){
             throw new GalleryServiceException("Image name or Image description should not be emptied");

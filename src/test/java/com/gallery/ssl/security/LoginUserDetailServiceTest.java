@@ -87,7 +87,6 @@ public class LoginUserDetailServiceTest {
                 withDescription("Samsung mobile phone").
                 withCreatedDate(LocalDate.parse("2020-01-08")).
                 withData(null).
-                //  withGallery(getGallery()).
                         build();
     }
 

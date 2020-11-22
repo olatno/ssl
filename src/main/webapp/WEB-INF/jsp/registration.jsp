@@ -42,7 +42,6 @@
             <button type="submit" name="submit" value="submit">Submit</button>
         </form:form>
     </div>
-<%--    <script src="${pageContext.request.contextPath}/resources/js/gallery.js"></script>--%>
 </div>
 </body>
 </html>

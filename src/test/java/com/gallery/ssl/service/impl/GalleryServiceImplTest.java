@@ -3,7 +3,6 @@ package com.gallery.ssl.service.impl;
 import com.gallery.ssl.builder.GalleryBuilder;
 import com.gallery.ssl.builder.ImageBuilder;
 import com.gallery.ssl.builder.RegisterRequestBuilder;
-import com.gallery.ssl.builder.UserBuilder;
 import com.gallery.ssl.model.Gallery;
 import com.gallery.ssl.model.Image;
 import com.gallery.ssl.model.User;
@@ -21,6 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -68,7 +68,7 @@ public class GalleryServiceImplTest {
     public void testViewGallery(){
         User user = savedUser("test2@gmail.com");
         List<Gallery> images =  galleryService.viewGallery();
-        Assert.assertEquals(images.size(),   1);
+        Assert.assertEquals(images.size(),   5);
     }
 
     @Test
@@ -91,11 +91,30 @@ public class GalleryServiceImplTest {
         Assert.assertEquals(savedImage.getGallery().getTitle(), "First gallery");
     }
 
-    private EditImageRequest getEditImageRequest(){
+    @Test
+    public void testGetGallery(){
+        User user = savedUser("gallery@gmail.com");
+        List<Map<String , Object>> mapList = galleryService.getGallery();
+        Map<String, Object> map = galleryService.getGallery().get(0);
+        Assert.assertEquals(map.get("author"), "John Dole");
+        Assert.assertEquals(map.get("title"), "First gallery");
+    }
+
+    @Test
+    public void testEditImage(){
+        User user = savedUser("edit@gmail.com");
+        Image savedImage = this.uploadImage(user);
+        galleryService.editImage(this.getEditImageRequest(savedImage));
+        Assert.assertEquals(savedImage.getName(), "Phone");
+        Assert.assertEquals(savedImage.getDescription(), "Samsung mobile phone");
+        Assert.assertEquals(savedImage.getGallery().getTitle(), "First gallery");
+    }
+
+    private EditImageRequest getEditImageRequest(Image image){
         EditImageRequest editImageRequest = new EditImageRequest();
-        editImageRequest.setId(1);
-        editImageRequest.setName("Image name");
-        editImageRequest.setDescription("Image description");
+        editImageRequest.setId(image.getId());
+        editImageRequest.setName(image.getName());
+        editImageRequest.setDescription(image.getDescription());
         return editImageRequest;
     }
 
@@ -122,18 +141,7 @@ public class GalleryServiceImplTest {
                 withDescription("Samsung mobile phone").
                 withCreatedDate(LocalDate.parse("2020-01-08")).
                 withData(null).
-                //  withGallery(getGallery()).
                         build();
-    }
-
-    private User getUser(){
-        return UserBuilder.aUser().withEmail("test@ymail.com").
-                withFirstName("John").
-                withLastName("Dole").
-                withPassword("1234").
-                withGallery(getGallery()).
-                withId(1).
-                build();
     }
 
     private User savedUser(String email){

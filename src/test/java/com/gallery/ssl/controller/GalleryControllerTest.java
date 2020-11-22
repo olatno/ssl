@@ -39,8 +39,6 @@ public class GalleryControllerTest {
     private Model model;
     @Mock
     private HttpServletRequest request;
-    @Mock
-    private SecurityContext context;
     @Autowired
     private LoginUserDetailService loginUserDetailService;
     @Autowired
@@ -112,7 +110,15 @@ public class GalleryControllerTest {
     @Test
     public void testGallery(){
         galleryController.gallery(model);
-        Assert.assertEquals(galleryService.viewGallery().size(), 0);
+        Assert.assertEquals(galleryService.viewGallery().size(), 1);
+    }
+
+    @Test
+    public void testErrors(){
+        HttpSession httpSession = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(httpSession);
+        galleryController.error(model, request);
+        verify(request, times(1)).getSession();
     }
 
     private User getUser(){
@@ -138,7 +144,6 @@ public class GalleryControllerTest {
                 withDescription("Samsung mobile phone").
                 withCreatedDate(LocalDate.parse("2020-01-08")).
                 withData(null).
-              //  withGallery(getGallery()).
                 build();
     }
 

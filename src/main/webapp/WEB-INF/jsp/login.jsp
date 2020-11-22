@@ -32,7 +32,6 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         </form>
     </div>
-    <script src="${pageContext.request.contextPath}/resources/js/gallery.js"></script>
     </div>
 </body>
 </html>
