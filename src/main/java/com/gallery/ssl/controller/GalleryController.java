@@ -1,6 +1,5 @@
 package com.gallery.ssl.controller;
 
-import com.gallery.ssl.model.Image;
 import com.gallery.ssl.model.User;
 import com.gallery.ssl.security.LoginUserDetailService;
 import com.gallery.ssl.security.LoginUserDetails;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The controller class for the mvc
@@ -100,10 +100,17 @@ public class GalleryController {
         return "registration";
     }
 
+    /**
+     * The gallery model view
+     *
+     * @param model the model use to pass info to front end
+     *
+     * @return List of map
+     */
     @RequestMapping(value = "/gallery")
     public String gallery(Model model) {
-        List<Image> imageList = galleryService.viewGallery();
-        model.addAttribute("images", imageList);
+        List<Map<String , Object>> imageMapList = galleryService.getGallery();
+        model.addAttribute("imageGallery", imageMapList);
         return "gallery";
     }
 }

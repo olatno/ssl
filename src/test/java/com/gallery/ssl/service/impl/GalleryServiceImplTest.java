@@ -67,7 +67,7 @@ public class GalleryServiceImplTest {
     @Test
     public void testViewGallery(){
         User user = savedUser("test2@gmail.com");
-        List<Image> images =  galleryService.viewGallery();
+        List<Gallery> images =  galleryService.viewGallery();
         Assert.assertEquals(images.size(),   1);
     }
 

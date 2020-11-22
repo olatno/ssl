@@ -4,6 +4,7 @@ import com.gallery.ssl.exception.GalleryServiceException;
 import com.gallery.ssl.model.Gallery;
 import com.gallery.ssl.model.Image;
 import com.gallery.ssl.model.User;
+import com.gallery.ssl.repository.GalleryRepository;
 import com.gallery.ssl.repository.ImageRepository;
 import com.gallery.ssl.repository.UserRepository;
 import com.gallery.ssl.service.GalleryService;
@@ -18,9 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * The gallery service use by the controller
@@ -36,6 +35,8 @@ public class GalleryServiceImpl implements GalleryService {
     private UserRepository userRepository;
     @Autowired
     private ImageRepository imageRepository;
+    @Autowired
+    private GalleryRepository galleryRepository;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
@@ -65,9 +66,35 @@ public class GalleryServiceImpl implements GalleryService {
 
     /**
      * {@inheritDoc}
+     * @return
      */
-    public List<Image> viewGallery(){
+    @Override
+    public List<Image> viewImages(){
         return imageRepository.findAll();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @return
+     */
+    @Override
+    public List<Gallery> viewGallery(){
+        return galleryRepository.findAll();
+    }
+
+    @Override
+    public List<Map<String , Object>> getGallery(){
+        List<Gallery> galleries = galleryRepository.findAll();
+        List<Map<String , Object>> mapList = new ArrayList<>();
+        for(Gallery gallery : galleries){
+            Map<String , Object> map = new HashMap<>();
+           User user = userRepository.findUserByGallery(gallery);
+           map.put("author", user.getFirstName() +" "+ user.getLastName());
+           map.put("title", gallery.getTitle());
+           map.put("images", this.getGalleryObjectArray(gallery));
+            mapList.add(map);
+        }
+        return mapList;
     }
 
     /**
@@ -133,12 +160,16 @@ public class GalleryServiceImpl implements GalleryService {
      */
     @Override
     public List<Object[]> userGallery(User user){
-        List<Image> images = imageRepository.findUserGallery(user.getGallery());
+        return this.getGalleryObjectArray(user.getGallery());
+    }
+
+    private List<Object[]> getGalleryObjectArray(Gallery gallery){
+        List<Image> images = imageRepository.findUserGallery(gallery);
         List<Object[]> listObjects = new ArrayList<>();
         for(Image image : images){
             Object[] objects = new Object[5];
             byte[] bytes = ArrayUtils.toPrimitive(image.getData());
-            objects[0] = BytesProcess.decompressBytes(bytes);
+            objects[0] = "data:image/png;base64," +Base64.getEncoder().encodeToString(BytesProcess.decompressBytes(bytes));
             objects[1] = image.getName();
             objects[2] = image.getDescription();
             LocalDate localDate = image.getCreatedDate();

@@ -2,7 +2,6 @@ package com.gallery.ssl.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Arrays;
 
 /**
  * The Entity class for the image
@@ -81,17 +80,5 @@ public class Image {
 
     public void setGallery(Gallery gallery) {
         this.gallery = gallery;
-    }
-
-    @Override
-    public String toString() {
-        return "Image{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", createdDate=" + createdDate +
-                ", data=" + Arrays.toString(data) +
-                ", gallery=" + gallery +
-                '}';
     }
 }

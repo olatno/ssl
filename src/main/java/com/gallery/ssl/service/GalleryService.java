@@ -8,6 +8,7 @@ import com.gallery.ssl.util.EditImageRequest;
 import com.gallery.ssl.util.RegisterRequest;
 
 import java.util.List;
+import java.util.Map;
 
 public interface GalleryService {
 
@@ -41,7 +42,21 @@ public interface GalleryService {
      *
      * @return List of uploaded images by all users
      */
-    List<Image> viewGallery();
+    List<Image> viewImages();
+
+    /**
+     * The List of  gallery
+     *
+     * @return List of uploaded images by all users
+     */
+    List<Gallery> viewGallery();
+
+    /**
+     * The List of gallery map
+     *
+     * @return List of uploaded images by all users
+     */
+    List<Map<String , Object>> getGallery();
 
     /**
      * The delete specific image

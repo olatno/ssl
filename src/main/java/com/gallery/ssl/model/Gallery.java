@@ -51,13 +51,4 @@ public class Gallery {
     public void setImages(Collection<Image> images) {
         this.images = images;
     }
-
-    @Override
-    public String toString() {
-        return "Gallery{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", images=" + images +
-                '}';
-    }
 }

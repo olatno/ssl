@@ -22,7 +22,7 @@
             <div class="panel panel-primary" >
                 <div class="panel-heading" ng-model="imageSelected.title" >{{data[1]}}</div>
                 <div class="panel-body" ng-model="imageSelected.image" ng-click="openImage(data[0], data[1], data[2], data[4])">
-                    <img ng-src="data:image/png;base64,{{data[0]}}" class="img-responsive" style="width:100px; height:40px" alt="{{data[1]}}"></div>
+                    <img ng-src="{{data[0]}}" class="img-responsive" style="width:100px; height:40px" alt="{{data[1]}}"></div>
                 <div class="panel-footer" image-identity="{{data[2]}}" ng-model="imageSelected.description">{{data[2]}}
                     <input name="image" type="checkbox" ng-model="imageSelected.data" ng-true-value="{{data[4]}}" ng-false-value="" value="{{data[4]}}" ng-change="checkedCheckboxValue()" > </div>
             </div>
@@ -66,7 +66,7 @@
                     <input type="text" class="modal-title" ng-model="openImageData.name" value="{{openImageData.name}}" placeholder="Change image title"/>
                 </div>
                 <div class="modal-body">
-                    <img ng-src="data:image/png;base64,{{openImageData.image}}" style="width: 400px; height: 400px">
+                    <img ng-src="{{openImageData.image}}" style="width: 400px; height: 400px">
                     <input type="text" class="description" ng-model="openImageData.description" value="{{openImageData.description}}" placeholder="Change image description" />
                     <input type="hidden" ng-model="openImageData.data"  value="{{openImageData.data}}"/>
                 </div>

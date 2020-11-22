@@ -23,3 +23,7 @@ a, a:visited, a:hover, a:active {
 .description{
     margin-top: 40px;
 }
+
+.modal-body img{
+    margin-left: 75px;
+}

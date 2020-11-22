@@ -85,16 +85,4 @@ public class User {
     public void setGallery(Gallery gallery) {
         this.gallery = gallery;
     }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + "*********" + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", gallery=" + gallery +
-                '}';
-    }
 }
