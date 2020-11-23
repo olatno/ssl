@@ -33,7 +33,7 @@ How to deploy and run the application.
         6. The gallery page is visible to everyone.
         
     Requirement and issues
-        1. The task met the basic requirement plus custom error page
+        1. The task meet the basic requirement plus custom error page
         2. The integration testing has not been possible due to some dependency issues that I am still trying to figure out.
         3. I have used CSS HTML bootstrap for the UI but still face challenges with UI
         4. Image byte array has been saved into db because of portability
